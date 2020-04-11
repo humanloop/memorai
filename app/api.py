@@ -36,9 +36,9 @@ def root():
 
 
 @app.post('question/')
-def gen_question(text: RequestData):
+def gen_question(q_type: str, text: RequestData):
     try:
-        return q_gen.gen_question(text.dict()['text_data'])
+        return q_gen.gen_question(q_type, text.dict()['text_data'])
     except Exception:
         return HTTPException(500, {'debug_info': 'series type not supported'})
 
