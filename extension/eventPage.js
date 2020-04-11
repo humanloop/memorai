@@ -241,7 +241,6 @@ function notifyUser(notifyContent, notificationType) {
 
 function createNotification(notificationTitle) {
   var manifestName;
-
   var manifestVersion;
 
   if (!isValidValue(manifestName)) {

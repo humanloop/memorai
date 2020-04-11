@@ -35,7 +35,7 @@ def root():
 
 
 @app.post('/question/')
-def gen_question(text: RequestData, q_type: str = 'closed'):
+def gen_question(text: RequestData, q_type: str = 'cloze'):
     try:
         return q_gen.gen_question(q_type, text.dict()['text_data'])
     except Exception:
