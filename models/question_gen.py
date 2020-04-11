@@ -110,13 +110,13 @@ def prepareDf(df):
     return wordsDf
 
 
-def blankAnswer(firstTokenIndex, lastTokenIndex, sentStart, sentEnd, doc):
+def clozeAnswer(firstTokenIndex, lastTokenIndex, sentStart, sentEnd, doc, answer):
     leftPartStart = doc[sentStart].idx
     leftPartEnd = doc[firstTokenIndex].idx
     rightPartStart = doc[lastTokenIndex].idx + len(doc[lastTokenIndex])
     rightPartEnd = doc[sentEnd - 1].idx + len(doc[sentEnd - 1])
 
-    question = doc.text[leftPartStart:leftPartEnd] + '_____' + doc.text[rightPartStart:rightPartEnd]
+    question = doc.text[leftPartStart:leftPartEnd] + '{{c1:' +  answer + '}}'+ doc.text[rightPartStart:rightPartEnd]
 
     return question
 
@@ -140,7 +140,7 @@ class QuestionGenerator:
         df = pd.DataFrame(words, columns=word_colums)
         return df
 
-    def gen_question(self, q_type: str, text: str, num_qs=4) -> list:
+    def gen_question(self, q_type: str, text: str, num_qs=10) -> list:
 
         if q_type == 'cloze':
             # Extract words
@@ -152,7 +152,10 @@ class QuestionGenerator:
             qaPairs = self.add_questions(labeledAnswers, text)
             # Pick the best questions
             questions = sortAnswers(qaPairs)
-            return questions[-num_qs:]
+            best_questions = []
+            for q in questions[-num_qs:]:
+                best_questions.append(q['question'])
+            return best_questions
         else:
             raise NotImplementedError
 
@@ -174,7 +177,7 @@ class QuestionGenerator:
                         answerIsFound = False
                 # If the current token is corresponding with the answer, add it
                 if answerIsFound:
-                    question = blankAnswer(token.i, token.i + len(answerDoc) - 1, sent.start, sent.end, doc)
+                    question = clozeAnswer(token.i, token.i + len(answerDoc) - 1, sent.start, sent.end, doc, answers[currAnswerIndex]['word'])
                     qaPair.append({'question': question, 'answer': answers[currAnswerIndex]['word'],
                                    'prob': answers[currAnswerIndex]['prob']})
                     currAnswerIndex += 1
@@ -222,5 +225,4 @@ if __name__ == "__main__":
     questions = qa.gen_question('cloze',
                                 "Cambridge (/ˈkeɪmbrɪdʒ/[2] KAYM-brij) is a university city and the county town of "
                                 "Cambridgeshire, England, on the River Cam approximately 50 miles (80 km) north of London.")
-    for q in questions:
-        print(q)
+    print(questions)
