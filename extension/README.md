@@ -1,6 +1,5 @@
 
 
-
 Sources
 ----
 https://github.com/1nsp1r3rnzt/chrome-anki-quick-adder
