@@ -240,7 +240,7 @@ class QuestionGenerator:
     def __init__(self) -> None:
         return None
 
-    def gen_question(self, q_type: str, text: str) -> list:
+    def gen_question(self, q_type: str, text: str, num_qs=4) -> list:
 
         if q_type == 'cloze':
             # Extract words
@@ -256,7 +256,7 @@ class QuestionGenerator:
             # Pick the best questions
             questions = sortAnswers(qaPairs)
 
-            return questions
+            return questions[-num_qs:]
         else:
             raise NotImplementedError
 
@@ -266,6 +266,6 @@ class QuestionGenerator:
 if __name__ == "__main__":
     qa = QuestionGenerator()
     questions = qa.gen_question('cloze',
-                                'Apollo 13 was the seventh crewed mission in the Apollo space program and the third meant to land on the Moon. The craft was launched from Kennedy Space Center on April 11, 1970, but the lunar landing was aborted after an oxygen tank in the service module (SM) failed two days into the mission. The crew instead looped around the Moon, and returned safely to Earth on April 17. The mission was commanded by Jim Lovell with Jack Swigert as command module (CM) pilot and Fred Haise as lunar module (LM) pilot. Swigert was a late replacement for Ken Mattingly, who was grounded after exposure to rubella.map')
+                                "Cambridge (/ˈkeɪmbrɪdʒ/[2] KAYM-brij) is a university city and the county town of Cambridgeshire, England, on the River Cam approximately 50 miles (80 km) north of London.")
     for q in questions:
-        print(q['question'], q['answer'])
+        print(q)
