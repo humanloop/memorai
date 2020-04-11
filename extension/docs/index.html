@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <title>Anki Quick Adder | Documentation by Ranjit Saini</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+  
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="wrapper">
+        <div class="container">
+            <section id="top" class="section docs-heading">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="big-title text-center">
+                            <h1>Anki Quick Adder</h1>
+                            <p class="lead">Extension For Anki / version 0.0.5</p>
+                        </div>
+                        <!-- end title -->
+                    </div>
+                    <!-- end 12 -->
+                </div>
+                <!-- end row -->
+                <hr>
+            </section>
+            <!-- end section -->
+            <div class="row">
+                <div class="col-md-3">
+                    <nav class="docs-sidebar" data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
+                        <ul class="nav">
+                            <li><a href="#line1">Getting Started</a></li>
+                            <li><a href="#line2">Settings</a></li>
+                            <li><a href="#line3">Known Bugs and Solutions</a>
+                            </li>
+                            <li> <a href="#line4">Version History (Changelog)</a></li>
+                            <li><a href="#line5">Copyright and license</a></li>
+                         
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-md-9">
+                    <section class="welcome">
+                        <div class="row">
+                            <div class="col-md-12 left-align">
+                                <h2 class="dark-text">Introduction<hr></h2>
+                                <div class="row">
+                                    <div class="col-md-12 full">
+                                        Welcome to Anki Quick Adder. This extension provides
+                                        <li>Ability to create anki cards directly from Google Chrome on your Anki Desktop.</li>
+                                        <li>Dropdown with all your tag for autocomplete feature.</li>
+                                        You can create card from
+                                        <li>chrome Menu</li>
+                                        <li>Extension icon </li>
+                                        <div>
+                                            <h4>Requirements</h4>
+                                            <p>You will require the following sofware to use the extension.</p>
+                                            <ol>
+                                                <li> <a href="https://apps.ankiweb.net" title="Anki">Anki</a> </li>
+                                                <li><a href="https://ankiweb.net/shared/info/2055492159" title="Anki Connect">Anki Connect plugin</a></li>
+                                                Anki connect create a localhost server which is user to send requests to your Anki dekstop app.
+                                            </ol>
+                                        </div>
+                                        <div class="intro2 clearfix">
+                                            <i class="fa fa-exclamation-triangle"></i> This extension is currently in beta. so, bear the bugs with me :-)
+                                            <br> Please, report bugs at github.
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end row -->
+                            </div>
+                        </div>
+                    </section>
+                    <!-- end section -->
+                    <section id="line1" class="section">
+                        <div class="row">
+                            <div class="col-md-12 left-align">
+                                <h2 class="dark-text">Getting Started<a href="#top">#back to top</a><hr></h2>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>
+                                    You can add cards through popup or chrome menu. </p>
+                                <p>Please, select a deck and note type before adding cards for the first time. </p>
+                            </div>
+                            <div class="col-md-6">
+                                <h4>From Chrome Menu</h4>
+                                <a href="images/anki-2.png" 
+                                data-rel="prettyPhoto"><img src="images/anki-2.png" alt="" class="img-responsive img-thumbnail"></a>
+                                <p>Chrome Menu is available only, when Anki is running in background.</p>
+                                If you cannot find this menu, then <a href="#line3">click here to read more.</a>
+                                <ul>
+                                    <li><strong>Step 1</strong> - Select the word, you want to enter</li>
+                                    <li><strong>Step 2</strong> - Click the field to send the word to that field.</li>
+                                    <li><strong>Step 3</strong> - Finally, click submit.</li>
+                                    <li><strong> Step 4.</strong> Select, word for the other field and add it. </li>
+                                    <li><strong> Step 6.</strong>Right click and Click submit.</li>
+                                    <li><strong> Step 5.</strong> A popup will open to submit your data for 2 seconds and will close.</li>
+
+                                </ul>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-md-6">
+                                <h4>Add From Popup.</h4>
+                                <a href="images/ankiStep1.png" data-rel="prettyPhoto"><img src="images/ankiStep1.png" alt="" class="img-responsive img-thumbnail"></a>
+                                <ul>
+                                    <li><strong>Step 1</strong> - Run Anki. The decklist is populated then only.</li>
+                                    <li><strong>Step 2</strong> - Click App icon to open app. </li>
+                                    <li><strong>Step 3</strong> - Select Deck type. </li>
+                                    <li><strong>Step 4</strong> - Select Card type.
+                                    </li>
+                                    <li><strong>Step 5</strong> - Enter the data in fields.
+                                    </li>
+                                    <li><strong>Step 6(Optional)</strong> - Enter tags <strong>separated by ;</strong> for autocomplete.
+                                    </li>
+                                    <li><strong>Step 7</strong> - Click Add Note.
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- end col -->
+                            <!-- start col-->
+                            <div class="col-md-12">
+                            </div>
+                            <div class="col-md-6">
+                                <h4>Inline editor</h4>
+                                <a href="images/anki-inline-editor.png" data-rel="prettyPhoto"><img src="images/anki-inline-editor.png" alt="" class="img-responsive img-thumbnail"></a>
+                                <p>Inline editor, is used to change color of text on the go.</p>
+                                <ul>
+                                    <li><strong>Step 1</strong> - Click app icon.</li>
+                                    <li><strong>Step 2</strong> - Write text in any field</li>
+                                    <li><strong>Step 3</strong> - <strong>Select the word to change color</strong></li>
+                                    <li><strong> Step 4.</strong> A toolbar will open to edit the word.</li>
+                                </ul>
+                            </div>
+                            <!--end col -->
+                            <div class="col-md-6">
+                                <h4>Append Mode</h4>
+                                <a href="images/anki-quick-adder-append-mode.png" data-rel="prettyPhoto"><img src="images/anki-quick-adder-append-mode.png" alt="" class="img-responsive img-thumbnail"></a>
+                                <p>If you want to copy data, then append another data to it using chrome menu.</p>
+                                <ul>
+                                    <li><strong>Step 1</strong> - Switch on the append settings.</li>
+                                    <li><strong>Step 2</strong> - Select the word, you want to enter.</li>
+                                    <li><strong>Step 3</strong> - Click the field to send the word to that field.</li>
+                                    <li><strong>Step 4</strong> - Select another data.</li>
+                                    <li><strong> Step 5.</strong> Right click and click on the same add to field</li>
+                                    <li><strong>step 5.</strong> Click the submit button through popup or chrome menu.</li>
+                                </ul>
+                            </div>
+                            <!--end col -->
+                        </div>
+                        <!-- end row -->
+                    </section>
+                    <!-- end section -->
+                    <section id="line2" class="section">
+                        <div class="row">
+                            <div class="col-md-12 left-align">
+                                <h2 class="dark-text">Settings <a href="#top">#back to top</a><hr></h2>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <strong>Clearing Defaults</strong>
+                                <ul>
+                                    <li> Clear the default settings</li>
+                                </ul>
+                                <strong>Append Menu</strong>
+                                <ul>
+                                    <li> Appends the data from chrome menu, if you add another word again.</li>
+                                </ul>
+                                <strong>Rebuild Menu</strong>
+                                <ul>
+                                    <li> This builds the menu again. It is useful for recovering the menu, if it is not shown</li>
+                                    
+                                        <h2><strong>Advance Settings </strong></h2>
+                                        <strong>For adding butons in inline editor toolbar.</strong>
+                                           
+                                           <p>You need to download extension from github and edit the javascript file around line 477.
+                                            The default buttons can be changed can be in `Javascript.js`. 
+                                            </p>
+                                            Available medium editor Buttons. You can read <a href="https://github.com/yabwe/medium-editor" title="Download Medium Editor">Medium Editor Docs</a> to edit it.
+                                            <pre>
+                                                ['bold', 'italic', 'underline', 'anchor', 'h2', 'h3', 'quote']
+                                            </pre>
+                                        <pre class="brush:javascript">
+                                            toolbar:
+                                             {
+            buttons: ['colorPicker',
+                'bold',
+                'italic',
+                'underline',
+                //You can add other options also. left H1 for reference
+                // {
+                //     name: 'h1',
+                //     action: 'append-h2',
+                //     aria: 'header type 1',
+                //     tagNames: ['h2'],
+                //     contentDefault: '<b>H1</b>',
+                //     classList: ['custom-class-h1'],
+                //     attrs: {
+                //         'data-custom-attr': 'attr-value-h1'
+                //     }
+                // },
+                // {
+                //     name: 'h2',
+                //     action: 'append-h3',
+                //     aria: 'header type 2',
+                //     tagNames: ['h3'],
+                //     contentDefault: '<b>H2</b>',
+                //     classList: ['custom-class-h2'],
+                //     attrs: {
+                //         'data-custom-attr': 'attr-value-h2'
+                //     }
+                // },
+                'pre',
+                'justifyCenter',
+            ]
+        },
+                                        </pre>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- end row -->
+                    </section>
+                    <!-- end section -->
+                    <section id="line3" class="section">
+                        <div class="row">
+                            <div class="col-md-12 left-align">
+                                <h2 class="dark-text">Known Bugs and Solutions <a href="#top">#back to top</a><hr></h2>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="images/no-menu.png" data-rel="prettyPhoto"><img src="images/no-menu.png" alt="" class="img-responsive img-thumbnail"></a>
+                            </div>
+                            <div class="col-md-8">
+                                <h4 id="line7_1"><p class="text-danger">No Chrome Menu - <a href="#top">#back to top</a></p> </h4>
+                                     <div class="p-3 mb-2 bg-danger text-white"> Click App icon>settings>Rebuild menu like on the screenshot.
+                                </div>
+                                        <p>Potential Reasons</p>
+                                <ol>
+
+                                    <li>Anki is not running</li>
+                                    <li>Chrome was opened before running Anki</li>
+                                </ol>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <!-- <a href="upload/thumbnail.png" data-rel="prettyPhoto"><img src="images/upload/thumbnail.png" alt="" class="img-responsive img-thumbnail"></a> -->
+                            </div>
+                            <div class="col-md-8">
+                                <h4 id="line7_2">Note Error - <a href="#top">#back to top</a></h4>
+                                <p>The Note is probably duplicate. Note might have front field empty</p>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                         <hr>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <!-- <a href="upload/thumbnail.png" data-rel="prettyPhoto"><img src="images/upload/thumbnail.png" alt="" class="img-responsive img-thumbnail"></a> -->
+                            </div>
+                            <div class="col-md-8">
+                                <h4 id="line7_2">No notification on Mac - <a href="#top">#back to top</a></h4>
+                                <p>Please read docs at <a href="https://github.com/1nsp1r3rnzt/chrome-anki-quick-adder" title="">Github page for information</a></p>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                    </section>
+                    <!-- end section -->
+                    <section id="line4" class="section">
+                        <div class="row">
+                            <div class="col-md-12 left-align">
+                                <h2 class="dark-text">Version History (Changelog) <a href="#top">#back to top</a><hr></h2>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                        <div class="row">
+                            <div class="col-md-12">
+    
+                                <p>Features planned(no deadline)</p>
+                                <ol>
+                                    <li>Store cards until anki is online</li>
+                                    <li>Retreive meaning from oxford API</li>
+                                </ol>
+                                <hr>
+                                <h4>Changelog</h4>
+                                <pre class="brush: html">
+                                   Please follow github readme for changeLog
+                                       
+
+
+                                      </pre>
+                            </div>
+                        </div>
+                        <!-- end row -->
+                    </section>
+                    <!-- end section -->
+                    <section id="line5" class="section">
+                        <div class="row">
+                            <div class="col-md-12 left-align">
+                                <h2 class="dark-text">Contribute <a href="#top">#back to top</a><hr></h2>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                        <div class="row">
+                            <div class="col-md-12">
+                            <ol >
+                                <li> Fork it!</li>
+                                <li>Create your feature branch: git checkout -b my-new-feature
+                                </li>
+                                <li>Commit your changes: git commit -am 'Add some feature'
+                                </li>
+                                <li>Push to the branch: git push origin my-new-feature
+                                </li>
+                                <li>Submit a pull request :D</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!-- end row -->
+                    </section>
+                    <!-- end section -->
+                    </section>
+                    <!-- end section -->
+                    <section id="line6" class="section">
+                        <div class="row">
+                            <div class="col-md-12 left-align">
+                                <h2 class="dark-text">Copyright and license <a href="#top">#back to top</a><hr></h2>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>2018 Ranjit Singh</p> Licensed under MIT license.
+<p>
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+<p>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+</p>
+                            </div>
+                        </div>
+                        <!-- end row -->
+                    </section>
+                    <!-- end section -->
+                </div>
+                <!-- // end .col -->
+            </div>
+            <!-- // end .row -->
+        </div>
+        <!-- // end container -->
+    </div>
+   
+    
+</body>
+
+</html>
