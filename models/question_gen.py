@@ -1,7 +1,6 @@
 """ NLP to take passage of text and generate a question """
 import spacy
 import pandas as pd
-nlp = spacy.load('en_core_web_sm')
 
 import _pickle as cPickle
 from pathlib import Path
@@ -80,57 +79,6 @@ def getSentenceForWordPosition(wordPos, senStarts):
             return i - 1
 
 
-def addWordsForParagrapgh(newWords, text):
-    doc = nlp(text)
-
-    neStarts = getNEStartIndexs(doc)
-    senStarts = getSentenceStartIndexes(doc)
-
-    #index of word in spacy doc text
-    i = 0
-
-    while (i < len(doc)):
-        #If the token is a start of a Named Entity, add it and push to index to end of the NE
-        if (i in neStarts):
-            word = neStarts[i]
-            #add word
-            currentSentence = getSentenceForWordPosition(word.start, senStarts)
-            wordLen = word.end - word.start
-            shape = ''
-            for wordIndex in range(word.start, word.end):
-                shape += (' ' + doc[wordIndex].shape_)
-
-            newWords.append([word.text,
-                            0,
-                            0,
-                            currentSentence,
-                            wordLen,
-                            word.label_,
-                            None,
-                            None,
-                            None,
-                            shape])
-            i = neStarts[i].end - 1
-        #If not a NE, add the word if it's not a stopword or a non-alpha (not regular letters)
-        else:
-            if (doc[i].is_stop == False and doc[i].is_alpha == True):
-                word = doc[i]
-
-                currentSentence = getSentenceForWordPosition(i, senStarts)
-                wordLen = 1
-
-                newWords.append([word.text,
-                                0,
-                                0,
-                                currentSentence,
-                                wordLen,
-                                None,
-                                word.pos_,
-                                word.tag_,
-                                word.dep_,
-                                word.shape_])
-        i += 1
-
 def oneHotEncodeColumns(df):
     columnsToEncode = ['NER', 'POS', "TAG", 'DEP']
 
@@ -162,30 +110,6 @@ def prepareDf(df):
     return wordsDf
 
 
-def generateDf(text):
-    words = []
-    addWordsForParagrapgh(words, text)
-
-    wordColums = ['text', 'titleId', 'paragrapghId', 'sentenceId','wordCount', 'NER', 'POS', 'TAG', 'DEP','shape']
-    df = pd.DataFrame(words, columns=wordColums)
-
-    return df
-
-
-def predictWords(wordsDf, df):
-
-    predictorPickleName = 'data/pickles/nb-predictor.pkl'
-    predictor = loadPickle(predictorPickleName)
-
-    y_pred = predictor.predict_proba(wordsDf)
-
-    labeledAnswers = []
-    for i in range(len(y_pred)):
-        labeledAnswers.append({'word': df.iloc[i]['text'], 'prob': y_pred[i][0]})
-
-    return labeledAnswers
-
-
 def blankAnswer(firstTokenIndex, lastTokenIndex, sentStart, sentEnd, doc):
     leftPartStart = doc[sentStart].idx
     leftPartEnd = doc[firstTokenIndex].idx
@@ -203,69 +127,100 @@ def sortAnswers(qaPairs):
     return orderedQaPairs
 
 
-def addQuestions(answers, text):
-    doc = nlp(text)
-    currAnswerIndex = 0
-    qaPair = []
-
-    #Check wheter each token is the next answer
-    for sent in doc.sents:
-        for token in sent:
-
-            #If all the answers have been found, stop looking
-            if currAnswerIndex >= len(answers):
-                break
-
-            #In the case where the answer is consisted of more than one token, check the following tokens as well.
-            answerDoc = nlp(answers[currAnswerIndex]['word'])
-            answerIsFound = True
-
-            for j in range(len(answerDoc)):
-                if token.i + j >= len(doc) or doc[token.i + j].text != answerDoc[j].text:
-                    answerIsFound = False
-
-            #If the current token is corresponding with the answer, add it
-            if answerIsFound:
-                question = blankAnswer(token.i, token.i + len(answerDoc) - 1, sent.start, sent.end, doc)
-
-                qaPair.append({'question' : question, 'answer': answers[currAnswerIndex]['word'], 'prob': answers[currAnswerIndex]['prob']})
-
-                currAnswerIndex += 1
-
-    return qaPair
-
-
 class QuestionGenerator:
-
     def __init__(self) -> None:
-        return None
+        self.nlp = spacy.load('en_core_web_sm')
+        predictor_obj_path = 'models/data/pickles/nb-predictor.pkl'
+        self.predictor = loadPickle(predictor_obj_path)
+
+    def generate_df(self, text):
+        words = []
+        self.add_words_for_paragrapgh(words, text)
+        word_colums = ['text', 'titleId', 'paragrapghId', 'sentenceId', 'wordCount', 'NER', 'POS', 'TAG', 'DEP', 'shape']
+        df = pd.DataFrame(words, columns=word_colums)
+        return df
 
     def gen_question(self, q_type: str, text: str, num_qs=4) -> list:
 
         if q_type == 'cloze':
             # Extract words
-            df = generateDf(text)
-            wordsDf = prepareDf(df)
-
+            df = self.generate_df(text)
+            words_df = prepareDf(df)
             # Predict
-            labeledAnswers = predictWords(wordsDf, df)
-
+            labeledAnswers = self.predict_words(words_df, df)
             # Transform questions
-            qaPairs = addQuestions(labeledAnswers, text)
-
+            qaPairs = self.add_questions(labeledAnswers, text)
             # Pick the best questions
             questions = sortAnswers(qaPairs)
-
             return questions[-num_qs:]
         else:
             raise NotImplementedError
 
-    def get_embeddings(self):
-        return 0
+    def add_questions(self, answers, text):
+        doc = self.nlp(text)
+        currAnswerIndex = 0
+        qaPair = []
+        # Check wheter each token is the next answer
+        for sent in doc.sents:
+            for token in sent:
+                # If all the answers have been found, stop looking
+                if currAnswerIndex >= len(answers):
+                    break
+                # In the case where the answer is consisted of more than one token, check the following tokens as well.
+                answerDoc = self.nlp(answers[currAnswerIndex]['word'])
+                answerIsFound = True
+                for j in range(len(answerDoc)):
+                    if token.i + j >= len(doc) or doc[token.i + j].text != answerDoc[j].text:
+                        answerIsFound = False
+                # If the current token is corresponding with the answer, add it
+                if answerIsFound:
+                    question = blankAnswer(token.i, token.i + len(answerDoc) - 1, sent.start, sent.end, doc)
+                    qaPair.append({'question': question, 'answer': answers[currAnswerIndex]['word'],
+                                   'prob': answers[currAnswerIndex]['prob']})
+                    currAnswerIndex += 1
+        return qaPair
+
+    def add_words_for_paragrapgh(self, newWords, text):
+        doc = self.nlp(text)
+        neStarts = getNEStartIndexs(doc)
+        senStarts = getSentenceStartIndexes(doc)
+        # index of word in spacy doc text
+        i = 0
+        while (i < len(doc)):
+            # If the token is a start of a Named Entity, add it and push to index to end of the NE
+            if (i in neStarts):
+                word = neStarts[i]
+                # add word
+                currentSentence = getSentenceForWordPosition(word.start, senStarts)
+                wordLen = word.end - word.start
+                shape = ''
+                for wordIndex in range(word.start, word.end):
+                    shape += (' ' + doc[wordIndex].shape_)
+
+                newWords.append([word.text, 0, 0, currentSentence,wordLen,word.label_, None, None, None, shape])
+                i = neStarts[i].end - 1
+            # If not a NE, add the word if it's not a stopword or a non-alpha (not regular letters)
+            else:
+                if (doc[i].is_stop == False and doc[i].is_alpha == True):
+                    word = doc[i]
+                    currentSentence = getSentenceForWordPosition(i, senStarts)
+                    wordLen = 1
+                    newWords.append([word.text, 0, 0, currentSentence, wordLen, None, word.pos_, word.tag_,
+                                     word.dep_, word.shape_])
+            i += 1
+
+    def predict_words(self, words_df, df):
+        y_pred = self.predictor.predict_proba(words_df)
+        labeledAnswers = []
+        for i in range(len(y_pred)):
+            labeledAnswers.append({'word': df.iloc[i]['text'], 'prob': y_pred[i][0]})
+        return labeledAnswers
+
 
 if __name__ == "__main__":
     qa = QuestionGenerator()
     questions = qa.gen_question('cloze',
-                                "Cambridge (/ˈkeɪmbrɪdʒ/[2] KAYM-brij) is a university city and the county town of Cambridgeshire, England, on the River Cam approximately 50 miles (80 km) north of London.")
+                                "Cambridge (/ˈkeɪmbrɪdʒ/[2] KAYM-brij) is a university city and the county town of "
+                                "Cambridgeshire, England, on the River Cam approximately 50 miles (80 km) north of London.")
     for q in questions:
         print(q)
