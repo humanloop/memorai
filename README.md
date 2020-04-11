@@ -1,5 +1,7 @@
 
-![Memorai](https://github.com/humanloop/memorai/raw/master/extension/icon-512.png | width=256)
+ <img src="https://github.com/humanloop/memorai/raw/master/extension/icon-512.png" width="256" >
+
+![Memorai](https://github.com/humanloop/memorai/raw/master/extension/icon-512.png)
 
 # Memorai
 
