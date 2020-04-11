@@ -23,7 +23,6 @@ app.add_middleware(CORSMiddleware,
                    allow_methods=["*"],
                    allow_headers=["*"])
 
-
 q_gen = QuestionGenerator()
 
 
@@ -35,8 +34,8 @@ def root():
     <p>See <a href='/docs'>docs</a></p>""")
 
 
-@app.post('question/')
-def gen_question(q_type: str, text: RequestData):
+@app.post('/question/')
+def gen_question(text: RequestData, q_type: str = 'closed'):
     try:
         return q_gen.gen_question(q_type, text.dict()['text_data'])
     except Exception:
