@@ -1,5 +1,9 @@
+![Memorai](https://github.com/humanloop/memorai/raw/master/extension/icon-512.png)
+
 # Memorai
+
 > "Memory is fundamental to our thinking, and the notion of having a perfect memory is seductive." -- Michael Nielsson
+
 
 Remember everything you read. 
 
