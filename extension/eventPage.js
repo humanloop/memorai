@@ -11,14 +11,13 @@ chrome.contextMenus.onClicked.addListener(function (clickData) {
     chrome.storage.sync.set({ selection: clickData.selectionText }, () => {
       var notificationOpts = {
         type: "basic",
-        iconUrl: "icon-48.png",
+        iconUrl: "public/icon-64.png",
         title: "text selected!",
         message: "AI is generating questions now",
       };
       console.log(`saving ${clickData.selectionText}`)
       chrome.notifications.create("selectionNotification", notificationOpts);
       window.open("popup.html", "extension_popup", "width=300,height=400,status=no,scrollbars=yes,resizable=no");
-No
     });
   }
 });
@@ -30,7 +29,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
 });
 
 function isUpdated() {
-  chrome.tabs.create({ url: "https://memorai.now.sh/" }, function (tab) {
+  chrome.tabs.create({ url: "https://memorai.humanloop.ml" }, function (tab) {
     console.log("updated");
   });
 }
