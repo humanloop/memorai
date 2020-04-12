@@ -21,7 +21,7 @@
   }
 
   async function sendToAnki() {
-    console.log(`sending ${JSON.stringify(questions)}`);
+    console.log(`sending ${JSON.stringify(questions, null, 4)}`);
     let data = {
       action: "addNotes",
       version: 6,
@@ -29,9 +29,9 @@
         notes: [questions.map(formatCloze)]
       }
     };
-    console.log(`sending ${JSON.stringify(data)}`);
+    console.log(`sending ${JSON.stringify(data, null, 4)}`);
     let response = await post("http://localhost:8765", data);
-    console.log(`Response`);
+    console.log(response);
   }
 
   async function getQuestions() {
@@ -103,7 +103,7 @@
       </div>
     {/if}
 
-    <button class="button is-small" on:click="{sendToAnki}">Send to anki</button>
+    <button class="button is-fullwidth" on:click="{sendToAnki}">Send to anki</button>
 
   </div>
 </section>
