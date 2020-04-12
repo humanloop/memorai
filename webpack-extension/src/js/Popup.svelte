@@ -1,5 +1,6 @@
 <script>
   import { onMount, onDestroy } from "svelte";
+  import { fade, fly } from "svelte/transition";
   import { post } from "./utils.js";
   export let name;
   export let selection =
@@ -7,6 +8,7 @@
   let sentSelection = "";
   let questions = [];
   let loading = false;
+  let sent = false;
 
   function formatCloze(question) {
     return {
@@ -20,6 +22,9 @@
     };
   }
 
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
   async function sendToAnki() {
     console.log(`sending ${JSON.stringify(questions, null, 4)}`);
     let data = {
@@ -33,6 +38,11 @@
     let response = await post("http://localhost:8765", data);
     console.log(response);
     chrome.browserAction.setIcon({ path: "icon-faded-64.png" });
+    sent = true;
+    while (questions) {
+      await sleep(500);
+      questions = questions.splice(1);
+    }
   }
 
   async function getQuestions() {
@@ -43,6 +53,7 @@
       questions = response.map(q => {
         return q.replace(":", "::");
       });
+      sent = false;
     }
   }
 
@@ -92,7 +103,7 @@
         </label>
         <div class="control">
           {#each questions as question, i}
-            <div class="notification">
+            <div class="notification" class:is-info="{sent}" out:fly>
               <button
                 class="delete"
                 on:click="{() => {
