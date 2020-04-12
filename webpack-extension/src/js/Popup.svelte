@@ -49,7 +49,6 @@
       <div class="control">
         {#each questions as question, i}
           <div class="notification">
-            i,
             <button
               class="delete"
               on:click="{() => {
