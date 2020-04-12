@@ -1,5 +1,5 @@
 
- <img src="https://github.com/humanloop/memorai/raw/master/extension/public/icon-512.png" width="180" alt="memorai" >
+ <img src="https://github.com/humanloop/memorai/raw/master/webpack-extension/icon-512.png" width="180" alt="memorai" >
 
 # Memorai
 
