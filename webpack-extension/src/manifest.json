@@ -4,7 +4,15 @@
   "background": {
     "page": "background.html"
   },
-  "permissions": ["http://3.17.29.171/", "browserAction", "storage", "notifications", "contextMenus", "activeTab", "http://localhost/"],
+  "permissions": [
+    "http://3.17.29.171/",
+    "commands",
+    "storage",
+    "notifications",
+    "contextMenus",
+    "activeTab",
+    "http://localhost/"
+  ],
   "browser_action": {
     "default_popup": "popup.html",
     "default_icon": "icon-64.png"
