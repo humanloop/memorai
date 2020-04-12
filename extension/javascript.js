@@ -49,7 +49,7 @@ function load_options() {
   getChanges("currentFields");
   getChanges("savedFormFields", "local");
   getChanges("storedFieldsForModels");
-  getChanges("modelNamesSaved");  
+  getChanges("modelNamesSaved");
   getChanges("getTagsSaved");
   getChanges("allSavedNotes");
   getChanges("stickyFields");

@@ -1,0 +1,74 @@
+{
+  "name": "Memorai – transform sentences into memories",
+  "version": "2.0.5",
+  "short_name": "Memorai",
+  "description": "This extension provides the ability to create anki cards directly from Google Chrome on your Anki Desktop.",
+  "background": {
+    "scripts": ["lib/common/js/jquery-3.3.1.min.js", "background.js"],
+    "persistent": false
+  },
+
+  "permissions": [
+    "storage",
+    "notifications",
+    "contextMenus",
+    "activeTab",
+    "http://localhost/"
+  ],
+
+  "browser_action": {
+    "default_icon": "public/icon-64.png",
+    "default_popup": "popup.html"
+  },
+
+  "icons": {
+    "16": "public/icon-16.png",
+    "32": "public/icon-32.png",
+    "48": "public/icon-64.png",
+    "128": "public/icon-128.png"
+  },
+  "web_accessible_resources": [
+    "public/icon-64.png",
+    "src/importFile.js",
+    "src/editCardModal.js",
+    "src/editCardModel.css",
+    "popup.html#tabs-2"
+  ],
+  "options_page": "popup.html#tabs-2",
+  "commands": {
+    "add-to-first-field": {
+      "suggested_key": {
+        "default": "Alt+Shift+1",
+        "mac": "Command+Shift+1"
+      },
+      "description": "Add select Text to first Field"
+    },
+    "add-to-second-field": {
+      "suggested_key": {
+        "default": "Alt+Shift+2",
+        "windows": "Alt+Shift+2",
+        "mac": "Alt+Shift+2"
+      },
+      "description": "Add select Text to second Field"
+    },
+    "add-to-third-field": {
+      "suggested_key": {
+        "default": "Alt+Shift+3",
+        "windows": "Alt+Shift+3",
+        "mac": "Alt+Shift+3"
+      },
+      "description": "Add select Text to third Field"
+    },
+
+    "submit-data-to-popup": {
+      "suggested_key": {
+        "default": "Alt+Shift+4",
+        "windows": "Alt+Shift+4",
+        "mac": "Alt+Shift+4"
+      },
+      "description": "Submit Data"
+    }
+  },
+
+  "manifest_version": 2
+}

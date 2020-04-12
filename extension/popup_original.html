@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Memorai Chrome Extension</title>
+    <script src="lib/common/js/jquery-3.3.1.min.js"></script>
+
+    <script src="lib/common/js/jquery-ui.min.js"></script>
+    <script src="lib/spectrum/spectrum.js"></script>
+    <script src="lib/common/js/jquery.validate.min.js"></script>
+    <link rel="stylesheet" href="lib/spectrum/spectrum.css" />
+    <link rel="stylesheet" href="lib/common/css/jquery-ui.css" class="rel" />
+
+    <script src="lib/common/js/jsgrid.min.js"></script>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="lib/common/css/jsgrid.min.css"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="lib/common/css/jsgrid-theme.min.css"
+    />
+
+    <script src="lib/mousetrap/mousetrap.min.js"></script>
+    <script src="lib/mousetrap/mousetrap-record.min.js"></script>
+
+    <!-- or any other theme -->
+    <link href="lib/select2/select2.min.css" rel="stylesheet" />
+    <script src="lib/select2/select2.min.js"></script>
+    <script src="lib/common/js/notify.min.js"></script>
+    <script src="javascript.js"></script>
+
+    <link rel="stylesheet" href="src/css/style.css" class="rel" />
+  </head>
+
+  <body>
+    <div id="tabs">
+      <ul>
+        <li><a href="#tabs-1" class="tab-add-card">Add Card</a></li>
+        <li><a href="#tabs-cards" class="tab-saved-cards">Saved Notes</a></li>
+        <li><a href="#tabs-2" class="tab-settings">Settings</a></li>
+        <li><a href="#tabs-3" class="tab-shortcuts">Shortcuts</a></li>
+      </ul>
+      <div id="tabs-1">
+        <div class="ui-widget">
+          <p>
+            Current Deck:
+            <button
+              type="button"
+              style="background-color: white; border: none;"
+              class="refreshData"
+              id="refreshDecks"
+            >
+              <img
+                src="images/refresh.png"
+                alt="icon"
+                title="Sync Deck list from Anki"
+              />
+            </button>
+          </p>
+
+          <div class="select-style">
+            <select id="deckList"></select>
+          </div>
+          <p>
+            Note Type:
+            <button
+              type="button"
+              style="background-color: white; border: none;"
+              class="refreshData"
+              id="refreshModel"
+              title="update deck list from Anki"
+            >
+              <img
+                src="images/refresh.png"
+                alt="icon"
+                title="update model list from Anki"
+              />
+            </button>
+          </p>
+
+          <div class="select-style">
+            <select id="modelList"> </select>
+          </div>
+
+          <h2>
+            Add Card
+
+            <button
+              type="button"
+              class="info-image"
+              style="background-color: white; border: none;"
+              id="stickyFieldsToggle"
+            >
+              <img
+                src="images/stickyFields.png"
+                alt="icon"
+                title="Toggle global Sticky fields settings. Turning off globally is useful when you add cards from chrome menu so it won't append data unintentionally."
+              />
+            </button>
+            <button
+              type="button"
+              class="info-image"
+              style="background-color: white; border: none;"
+              id="saveNotesToggle"
+            >
+              <img
+                src="images/localMode.png"
+                alt="icon"
+                title="Toggle save Note settings."
+              />
+            </button>
+            <button
+              type="button"
+              class="info-image"
+              style="background-color: white; border: none;"
+              id="nightMode"
+            >
+              <img
+                src="images/nightmode.png"
+                alt="icon"
+                title="Changes to dark theme temporary to see colored text clearly"
+              />
+            </button>
+            <button
+              type="button"
+              class="info-image"
+              style="background-color: white; border: none;"
+              id="resetButton"
+            >
+              <img
+                src="images/delete.png"
+                alt="icon"
+                title="Clear all the fields(even sticky)"
+              />
+            </button>
+          </h2>
+
+          <form id="form1">
+            <div id="addCard">
+              <label for="Default-Front-field">Front:</label>
+              <textarea
+                name="front"
+                class="editable"
+                id="Default-Front-field"
+              ></textarea
+              ><br />
+              <label for="Default-Back-field">Back:</label>
+              <textarea
+                name="back"
+                class="editable"
+                id="Default-Back-Field"
+              ></textarea
+              ><br />
+            </div>
+            <label for="tags">Tags: </label>
+            <button type="button" class="stickyButton" id="stickyTagsButton">
+              <img src="images/sOff.png" alt="icon" />
+            </button>
+            <button
+              type="button"
+              style="background-color: white; border: none;"
+              class="refreshData"
+              id="refreshTags"
+            >
+              <img
+                src="images/refresh.png"
+                alt="icon"
+                title="update tags list from Anki"
+              />
+            </button>
+
+            <br />
+            <input id="tags" size="45" />
+
+            <br />
+            <input type="submit" value="Add Note" id="submitNoteButton" />
+          </form>
+        </div>
+        <div id="errorLogs">
+          <hr />
+        </div>
+      </div>
+      <div id="tabs-cards">
+        <div class="ui-widget">
+          <div id="jsGrid"></div>
+
+          <div id="gridButtons">
+            <input
+              type="button"
+              id="dialogGridDeleteAll"
+              value="Delete all Notes"
+            />
+            <input
+              type="button"
+              id="dialogGridSubmit"
+              class="greenButton"
+              value="Send Notes to Anki"
+            />
+            <input
+              type="button"
+              id="dialogGridExport"
+              class="blueButton"
+              title="make sure you are not on a chrome setting page as import and export does not have permission to save from there"
+              value="Export Notes"
+            />
+            <input
+              type="button"
+              id="dialogGridImport"
+              class="blueButton"
+              title="import from exported notes"
+              value="Import Notes"
+            />
+          </div>
+
+          <div
+            id="dialog-gridDeleteAll-confirm"
+            title="Delete all notes?"
+          ></div>
+          <div
+            id="dialog-gridSubmit-confirm"
+            title="Send All Notes To Anki?"
+          ></div>
+          <div id="saveNotesLogs"></div>
+
+          <div id="detailsDialog" title="add card">
+            <p>Current Deck</p>
+
+            <div class="select-style">
+              <select id="dialogDeckList"></select>
+            </div>
+            <p>Note Type:</p>
+
+            <div class="select-style">
+              <select id="dialogModelList"> </select>
+            </div>
+            <div id="dialogsLog"></div>
+
+            <h2>Add Card</h2>
+            <form id="dialogform1">
+              <div id="dialogAddCard"></div>
+              <label for="tags">Tags:</label>
+
+              <input id="dialogTags" size="45" />
+              <br />
+
+              <input type="button" id="dialogResetButton" value="Reset" />
+
+              <input type="submit" id="submitDialog" value="Save Note" />
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div id="tabs-2">
+        Favourite Decks:
+
+        <br />
+
+        <select class="multipleSelect2" id="FavouriteDeck" multiple="multiple">
+        </select>
+
+        Favourite Models:
+        <br />
+        <select class="multipleSelect2" id="FavouriteModel" multiple> </select>
+        <br />
+        In-Line editor Buttons:
+        <br />
+        <select class="multipleSelect2" id="FavouriteButtons" multiple>
+          <option value="colorPicker">colorPicker</option>
+          <option value="bold">bold</option>
+          <option value="italic">Italic</option>
+          <option value="removeFormat">Remove Formatting</option>
+          <option value="anchor">Add Link(#)</option>
+          <option value="pre">Code</option>
+          <option value="underline">Underline</option>
+          <option value="strikethrough">Strikethrough</option>
+          <option value="subscript">Subssript</option>
+          <option value="superscript">Superscript</option>
+          <option value="quote">Quote</option>
+          <option value="orderedlist">Orderedlist</option>
+          <option value="unorderedlist">Unordered list</option>
+          <option value="indent">Indent</option>
+          <option value="outdent">Outdent</option>
+          <option value="justifyLeft">Justify Left</option>
+          <option value="justifyCenter">Justify Center</option>
+          <option value="justifyRight">Justify Right</option>
+          <option value="justifyFull">Justify Full</option>
+          <option value="h1">Heading 1</option>
+          <option value="h2">Heading 2</option>
+          <option value="h3">Heading 3</option>
+          <option value="h4">Heading 4</option>
+          <option value="h5">Heading 5</option>
+          <option value="h6">Heading 6</option>
+        </select>
+        <br />
+
+        <hr />
+
+        <table style="width: 100%;">
+          <tr>
+            <td>
+              Sync Fields:
+              <img
+                src="images/info.png"
+                class="info-image"
+                alt="icon"
+                title="Manual: CLick refresh icons while Anki is running to get latest fields.<Live: Auto update Decks List from Anki everytime"
+              />
+            </td>
+            <td>
+              <div class="select-style">
+                <select id="syncSetting">
+                  <option value="Live">Live Sync(Always need Anki)</option>
+                  <option value="Manual">Manual (Caches Fields)</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              save Notes: LocalStorage
+              <img
+                src="images/info.png"
+                class="info-image"
+                alt="icon"
+                title="save notes in extension if Anki is not connected.<br> Save locally mode saves notes directly in the extension without trying to connect to Anki(fast for computer where anki is not installed)"
+              />
+            </td>
+            <td>
+              <div class="select-style">
+                <select id="saveNotes">
+                  <option value="true">save if AnkiConnect Fails</option>
+                  <option value="trueLocal">Save all notes Locally</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Frozen Fields:<img
+                src="images/info.png"
+                class="info-image"
+                alt="icon"
+                title="Frozen fields are sticky fields that stay after a adding note. Turn on setting and Click [S] icon in the Add card tab for each field. "
+              />
+            </td>
+            <td>
+              <div class="select-style">
+                <select id="stickyFields">
+                  <option value="false">false</option>
+                  <option value="true">true</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Remove duplicate Notes from Local Storage:
+
+              <img
+                src="images/info.png"
+                class="info-image"
+                alt="icon"
+                title="When saved notes are submitted, duplicate notes are deleted from local storage automatically. Turning it off leaves them in the list for you to edit  "
+              />
+            </td>
+            <td>
+              <div class="select-style">
+                <select id="removeDuplicateNotes">
+                  <option value="false">False</option>
+                  <option value="true">True</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Decks in chrome menu:
+              <img
+                src="images/info.png"
+                class="info-image"
+                alt="icon"
+                title="Show favourite decks in chrome menu instead of all decks"
+              />
+            </td>
+            <td>
+              <div class="select-style">
+                <select id="showFavouriteDeck">
+                  <option value="0">All Decks</option>
+                  <option value="1">Show favourite Decks</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Models in chrome menu:
+              <img
+                src="images/info.png"
+                class="info-image"
+                alt="icon"
+                title="Show favourite models in chrome menu instead of all models"
+              />
+            </td>
+            <td>
+              <div class="select-style">
+                <select id="showFavouriteModel">
+                  <option value="0">All Models</option>
+                  <option value="1">Show favourite Models</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              paste Plain text:
+              <img
+                src="images/info.png"
+                class="info-image"
+                alt="icon"
+                title="filters data pasted to allow plain html"
+              />
+            </td>
+            <td>
+              <div class="select-style">
+                <select id="forcePlainText">
+                  <option value="false">False</option>
+                  <option value="true">True</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Clean pasted Html
+              <div id="info-text">
+                <img
+                  src="images/info.png"
+                  class="info-image"
+                  alt="icon"
+                  title="clears classes from pasted html when turned on"
+                />
+              </div>
+            </td>
+            <td>
+              <div class="select-style">
+                <select id="cleanPastedHTML">
+                  <option value="false">False</option>
+                  <option value="true">True</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p>
+                Append data to fields:
+                <img
+                  src="images/info.png"
+                  class="info-image"
+                  alt="icon"
+                  title="When turned on, When you press shortcut to add data or send data from chrome menu, selected data on any page is appended to already existing data. When turned off, the fields are cleared every time before sending data "
+                />
+              </p>
+            </td>
+            <td>
+              <div class="select-style">
+                <select id="appendFields">
+                  <option value="0">False</option>
+                  <option value="1">True</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Rebuild Chrome Menu
+              <img
+                src="images/info.png"
+                class="info-image"
+                alt="icon"
+                title="If you don't see chrome menu, then recover using this option. It will try to recreate the menu "
+              />
+            </td>
+            <td>
+              <input type="button" id="reloadChromeMenu" value="Rebuild Menu" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p>
+                Debug Mode:
+                <img
+                  src="images/info.png"
+                  class="info-image"
+                  alt="icon"
+                  title=": Turn console debug on or off to help debugging."
+                />
+              </p>
+            </td>
+            <td>
+              <input type="button" id="changeDebugMode" value="Change Mode" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Sync Anki Desktop to AnkiWeb
+              <img
+                src="images/info.png"
+                class="info-image"
+                alt="icon"
+                title="Clicking it will open AnkiDesktop and press Sync."
+              />
+            </td>
+            <td>
+              <input type="button" id="syncAnkiToWeb" value="Start Sync" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Clear all Settings & Restore defaults
+              <img
+                src="images/info.png"
+                class="info-image"
+                alt="icon"
+                title="Warning, All settings will deleted and default settings will be restored."
+              />
+            </td>
+            <td>
+              <input
+                type="button"
+                style="background: #000;"
+                id="clearAllDefaults"
+                value="Restore Defaults"
+              />
+            </td>
+          </tr>
+        </table>
+        <hr />
+        <div id="settingsLog"></div>
+      </div>
+      <div id="tabs-3">
+        <div id="shortcutsLog"></div>
+        <table style="width: 100%;">
+          <tr>
+            <td>Favourite Deck:</td>
+            <td>
+              <input
+                type="button"
+                id="changeDeckShortcut"
+                class="shortcut"
+                value="Change Shortcut"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td>Favourite Models:</td>
+            <td>
+              <input
+                type="button"
+                id="changeModelShortcut"
+                class="shortcut"
+                value="Change Shortcut"
+              />
+            </td>
+          </tr>
+
+          <tr>
+            <td>Cloze:</td>
+            <td>
+              <input
+                type="button"
+                id="changeClozeShortcut"
+                class="shortcut"
+                value="Change Shortcut"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>Quick Submit:</td>
+            <td>
+              <input
+                type="button"
+                id="changeQuickSubmitShortcut"
+                class="shortcut"
+                value="Change Shortcut"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>Reset Fields:</td>
+            <td>
+              <input
+                type="button"
+                id="changeResetShortcut"
+                class="shortcut"
+                value="Change Shortcut"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>Restore Default Shortcuts:</td>
+            <td>
+              <input
+                type="button"
+                id="restoreShortcuts"
+                style="background: #000;"
+                value="Restore Defaults"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>Edit shortcut for fields:</td>
+            <td>
+              Paste
+              <span style="background: yellow;"
+                >chrome://extensions/shortcuts</span
+              >
+              in addressbar
+            </td>
+          </tr>
+          <tr>
+            <td>shortcut for New Line:</td>
+            <td>
+              Press <span style="background: #ffce00;">Shift+Enter</span> in any
+              field
+            </td>
+          </tr>
+          <tr>
+            <td>Shortcut for New Paragraph:</td>
+            <td>
+              Press <span style="background: #a4c7ff;">Enter</span> in any Field
+            </td>
+          </tr>
+          <tr>
+            <td>Open as a popup:</td>
+            <td>
+              Right Click extension icon
+              <span style="background: #a4c7ff;">Click options</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
