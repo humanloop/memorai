@@ -1,7 +1,19 @@
-chrome.storage.sync.get("selection", function (res) {
-  console.log(res.selection);
-  console.log($('#selection'));
-  $('#selection').text(res.selection);
+function getLocal(key) {
+  chrome.storage.sync.get(key, function (res) {
+    console.log(res[key]);
+    return res[key];
+  });
+}
+
+
+$(document).ready(() => {
+  chrome.storage.onChanged.addListener(function (changes, storageName) {
+    console.log("New item in storage", changes);
+  });
+  let selection = getLocal("selection");
+  $("#selection").text(selection);
+  $("#getLocalButton").click(() => {
+    let selection = getLocal("selection");
+    $("#selection").text(selection);
+  });
 });
-
-
