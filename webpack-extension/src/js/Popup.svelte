@@ -1,6 +1,5 @@
 <script>
   import { post } from "./utils.js";
-
   export let name;
   export let selection =
     "On July 20, 1969, Armstrong became the first human to step on the moon. He and lunar lander Eagle pilot Edwin 'Buzz' Aldrin walked around the surface for about three hours and carried out experiments. Michael Collins, the command module pilot, stayed in orbit around the moon during their descent.";
@@ -9,6 +8,7 @@
     let response = await post("http://3.17.29.171/", { text_data: "a man walks into a bar" });
     console.log(response);
   }
+
 </script>
 
 <section class="section">
