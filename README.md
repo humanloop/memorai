@@ -1,5 +1,6 @@
 
  <img src="https://raw.githubusercontent.com/humanloop/memorai/master/webpack-extension/src/img/icon-192.png" width="180" alt="memorai"> 
+ 
 # Memorai
 
 > "Memory is fundamental to our thinking, and the notion of having a perfect memory is seductive." -- Michael Nielsson
