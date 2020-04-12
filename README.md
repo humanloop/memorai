@@ -12,7 +12,7 @@ Memorai is an AI that generates questions based on the text you're reading. It w
 # Platform
 The alpha version of the Memorai platform is made up of:
  * A Chrome extension for selecting what you wish to remember
- * A machine learning question generation back end exposed via REST API for creating novel quizes (hosted on Amazon Web Services)
+ * A machine learning question generation back end (inspired by https://github.com/KristiyanVachev/Question-Generation) exposed via REST API for creating novel quizes (hosted on Amazon Web Services)
  * Integration to Anki memory tool using Anki connect (leveraging the users local instance of Anki)
 
 # Tech stach
