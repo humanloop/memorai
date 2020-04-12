@@ -10,5 +10,6 @@ body {
 }
 
 body {
+  min-height: 500px;
   width: 500px;
 }
