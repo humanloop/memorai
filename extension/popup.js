@@ -1,5 +1,5 @@
 function getLocal(key) {
-  chrome.storage.sync.get(key, function (res) {
+  chrome.storage.local.get(key, function (res) {
     console.log(res[key]);
     return res[key];
   });
