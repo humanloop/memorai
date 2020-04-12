@@ -19,6 +19,7 @@ if (fileSystem.existsSync(secretsPath)) {
 }
 
 var options = {
+  mode: 'development', // Added by Jordan to kill warning (might need to remove)
   entry: {
     popup: path.join(__dirname, "src", "js", "popup.js"),
     options: path.join(__dirname, "src", "js", "options.js"),

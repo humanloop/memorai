@@ -1,5 +1,5 @@
 {
-  "name": "Chrome Extension Svelte",
+  "name": "Memorai – AI memory assistant",
   "options_page": "options.html",
   "background": {
     "page": "background.html"
