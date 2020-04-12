@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import { post } from "./utils.js";
   export let name;
   export let selection =
@@ -25,6 +25,10 @@
       selection = res["selection"];
       getQuestions();
     });
+  });
+  onDestroy(async () => {
+    // deblue the icon
+    chrome.browserAction.setIcon({ path: "icon-faded-64.png" });
   });
 </script>
 

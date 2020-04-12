@@ -15,7 +15,7 @@
   ],
   "browser_action": {
     "default_popup": "popup.html",
-    "default_icon": "icon-64.png"
+    "default_icon": "icon-faded-64.png"
   },
   "icons": {
     "128": "icon-128.png"
