@@ -3,9 +3,10 @@
   import { post } from "./utils.js";
   export let name;
   export let selection =
-    "On July 20, 1969, Armstrong became the first human to step on the moon. He and lunar lander Eagle pilot Edwin 'Buzz' Aldrin walked around the surface for about three hours and carried out experiments. Michael Collins, the command module pilot, stayed in orbit around the moon during their descent.";
+    "On July 20, 1969, Armstrong became the first human to step on the moon. Michael Collins, the command module pilot, stayed in orbit around the moon during their descent.";
   let sentSelection = "";
   let questions = [];
+  let loading = false;
 
   async function getQuestions() {
     if (selection) {
@@ -17,7 +18,13 @@
   }
 
   onMount(async () => {
-    getQuestions();
+    // deblue the icon
+    chrome.browserAction.setIcon({ path: "icon-64.png" });
+    chrome.storage.local.get("selection", function(res) {
+      console.log(res);
+      selection = res["selection"];
+      getQuestions();
+    });
   });
 </script>
 
@@ -39,29 +46,34 @@
         <textarea class="textarea" bind:value="{selection}"></textarea>
       </div>
     </div>
-    <div class="field">
-      <label class="label">
-        Anki questions
-        {#if sentSelection !== selection}
-          <button class="is-pulled-right button is-small" on:click="{getQuestions}">Get questions</button>
-        {/if}
-      </label>
-      <div class="control">
-        {#each questions as question, i}
-          <div class="notification">
-            <button
-              class="delete"
-              on:click="{() => {
-                questions = [...questions.slice(0, i), ...questions.slice(i + 1)];
-              }}"></button>
-            {question}
-          </div>
-        {/each}
+    {#if loading}
+      loading...
+    {:else}
+      <div class="field">
+        <label class="label">
+          Anki questions
+          {#if sentSelection !== selection}
+            <button class="is-pulled-right button is-small" on:click="{getQuestions}">Get questions</button>
+          {/if}
+        </label>
+        <div class="control">
+          {#each questions as question, i}
+            <div class="notification">
+              <button
+                class="delete"
+                on:click="{() => {
+                  questions = [...questions.slice(0, i), ...questions.slice(i + 1)];
+                }}"></button>
+              {question}
+            </div>
+          {/each}
 
+        </div>
       </div>
-    </div>
+    {/if}
+
     <button
-      class="button is-small"
+      class="button is-fullwidth"
       on:click="{() => {
         alert('not enabled');
       }}">
@@ -72,6 +84,9 @@
 </section>
 
 <style>
+  .section {
+    padding-top: 1.8rem;
+  }
   .logomark {
     justify-content: center;
   }
@@ -86,6 +101,6 @@
 
   textarea {
     width: 300px;
-    max-height: 160px;
+    max-height: 140px;
   }
 </style>

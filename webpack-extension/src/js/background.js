@@ -17,13 +17,6 @@ chrome.contextMenus.onClicked.addListener(function (clickData) {
     chrome.storage.local.set({ selection: clickData.selectionText }, function () {
       console.log(clickData.selectionText);
       chrome.browserAction.setIcon({path: 'icon-blue-64.png'});
-      chrome.runtime.sendMessage({
-        msg: "something_completed",
-        data: {
-          subject: "Loading",
-          content: "Just completed!",
-        },
-      });
     });
   }
 });
