@@ -1,4 +1,4 @@
-import App from "../svelte/Popup.svelte";
+import App from "./Popup.svelte";
 import "../css/popup.css";
 
 const app = new App({
