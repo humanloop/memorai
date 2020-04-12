@@ -32,6 +32,7 @@
     console.log(`sending ${JSON.stringify(data, null, 4)}`);
     let response = await post("http://localhost:8765", data);
     console.log(response);
+    chrome.browserAction.setIcon({ path: "icon-faded-64.png" });
   }
 
   async function getQuestions() {
@@ -39,7 +40,9 @@
       let response = await post("http://3.17.29.171/question/", { text_data: selection });
       sentSelection = selection;
       console.log(response);
-      questions = response;
+      questions = response.map(q => {
+        return q.replace(":", "::");
+      });
     }
   }
 
