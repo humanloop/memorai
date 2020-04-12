@@ -35,10 +35,10 @@
       }
     };
     console.log(`sending ${JSON.stringify(data, null, 4)}`);
+    sent = true;
     let response = await post("http://localhost:8765", data);
     console.log(response);
     chrome.browserAction.setIcon({ path: "icon-faded-64.png" });
-    sent = true;
     while (questions) {
       await sleep(500);
       questions = questions.splice(1);
