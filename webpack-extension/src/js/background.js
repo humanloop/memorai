@@ -12,15 +12,8 @@ chrome.contextMenus.create(contextMenuItem);
 
 chrome.contextMenus.onClicked.addListener(function (clickData) {
   if (clickData.menuItemId === "memorai" && clickData.selectionText) {
-    chrome.storage.local.set({ selection: clickData.selectionText }, () => {
-      var notificationOpts = {
-        type: "basic",
-        iconUrl: "public/icon-64.png",
-        title: "text selected!",
-        message: "AI is generating questions now",
-      };
+    chrome.storage.local.set({ selection: clickData.selectionText }, function() {
       console.log(clickData.selectionText);
-      chrome.notifications.create("selectionNotification", notificationOpts);
     });
   }
 });

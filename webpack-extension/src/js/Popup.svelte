@@ -9,6 +9,11 @@
     console.log(response);
   }
 
+chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
+      console.log(response.farewell);
+      
+        });
+
 </script>
 
 <section class="section">
