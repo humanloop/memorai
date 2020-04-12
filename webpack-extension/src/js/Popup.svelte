@@ -2,10 +2,146 @@
   import { onMount } from "svelte";
   import { post } from "./utils.js";
   export let name;
+  export let allSavedNotes = ['testing text'];
   export let selection =
     "On July 20, 1969, Armstrong became the first human to step on the moon. He and lunar lander Eagle pilot Edwin 'Buzz' Aldrin walked around the surface for about three hours and carried out experiments. Michael Collins, the command module pilot, stayed in orbit around the moon during their descent.";
   let sentSelection = "";
   let questions = [];
+
+
+function sendNotesAnki() {
+  counterForAll = 0;
+  notesAddedCounter = 0;
+  notesDuplicateCounter = 0;
+  savedNotesLength = allSavedNotes.length;
+
+connectToAnki(function (status, error) {
+    if (status === true) {
+        for (i = 0; i < allSavedNotes.length; i++) {
+          sendEachNoteAnki(allSavedNotes[i]);
+        }
+    } else {
+      if (background.findRegex("failed to connect to AnkiConnect", error)) {
+        alert(
+          "No, connection. Please open Anki to send saved cards.",
+          "error"
+        );
+      }
+    }
+  });
+}
+
+
+
+function sendEachNoteAnki(item) {
+  //get note params
+  var retrievedNoteVal = JSON.parse(item).note;
+  //see if tags are already an arrray
+
+  if (retrievedNoteVal["tags"].length === 1) {
+    retrievedNoteVal["tags"] = background.getTagsArray(
+      retrievedNoteVal["tags"][0]
+    );
+  }
+
+  let params = {
+    note: retrievedNoteVal,
+  };
+  background
+    .ankiConnectRequest("addNote", 6, params)
+    .then(function (fulfilled) {
+      if (removeFromArray(allSavedNotes, item)) {
+        debugLog("item removed");
+      }
+      notesAddedCounter++;
+    })
+    .catch(function (error) {
+      if (background.findRegex("Note is duplicate", error)) {
+        if (!isValidValue(allSettings.removeDuplicateNotes)) {
+          saveSettings("removeDuplicateNotes", false);
+        }
+        if (allSettings.removeDuplicateNotes === false) {
+          currentErrors[item] = "Duplicate Note";
+        } else if (allSettings.removeDuplicateNotes === true) {
+          if (removeFromArray(allSavedNotes, item)) {
+            debugLog("duplicate item removed");
+          }
+        }
+        notesDuplicateCounter++;
+      } else if (background.findRegex("Collection was not found", error)) {
+        currentErrors[item] = "Collection not found";
+      } else if (background.findRegex("Note was empty", error)) {
+        currentErrors[item] = "Empty Fields";
+      } else if (background.findRegex("Model was not found", error)) {
+        currentErrors[item] = "NoteType Not Found";
+      } else if (background.findRegex("Deck was not found", error)) {
+        currentErrors[item] = "Deck Not Found";
+      } else if (error === null) {
+        currentErrors[item] = "empty main field";
+      } else {
+        currentErrors[item] = JSON.stringify(error);
+      }
+    })
+    .finally(function () {
+      counterForAll++;
+
+      if (counterForAll % 7 === 0) {
+        $("#jsGrid").jsGrid("render");
+      }
+      if (counterForAll === savedNotesLength) {
+        $("#jsGrid")
+          .jsGrid("render")
+          .done(function () {
+            for (var item in currentErrors) {
+              var index = allSavedNotes.indexOf(item);
+              if (index != "-1") {
+                // $('.saveNotesTable' + allSavedNotes.indexOf(item)).find('.dialogTableError').html(currentErrors[item]);
+
+                var noteWithLastError = {};
+
+                noteWithLastError.note = JSON.parse(allSavedNotes[index]).note;
+                noteWithLastError.lasterror = currentErrors[item];
+                allSavedNotes[index] = JSON.stringify(noteWithLastError);
+              }
+            }
+            var duplicateRemovedorFound;
+            if (allSettings.removeDuplicateNotes === true) {
+              duplicateRemovedorFound = " removed: ";
+            } else {
+              duplicateRemovedorFound = " found: ";
+            }
+            if (notesAddedCounter > 0) {
+              saveNotesLog("Notes Added:" + notesAddedCounter, "success");
+            } else {
+              saveNotesLog("No new note to add", "info");
+            }
+            if (notesDuplicateCounter > 0) {
+              saveNotesLog(
+                "Duplicates" + duplicateRemovedorFound + notesDuplicateCounter,
+                "error"
+              );
+            }
+
+            saveChanges("allSavedNotes", allSavedNotes);
+            var pageSize = $("#jsGrid").jsGrid("option", "pageSize");
+            var lastPage = Math.ceil(allSavedNotes.length / pageSize);
+            $("#jsGrid").jsGrid("openPage", lastPage);
+          });
+      }
+    });
+}
+
+
+
+  function connectToAnki(callback) {
+        background.ankiConnectRequest("version", 6)
+            .then(function () {
+                      callback(true);
+                          
+                    })
+  }
+
+
 
   async function getQuestions() {
     if (selection) {
@@ -62,9 +198,7 @@
     </div>
     <button
       class="button is-small"
-      on:click="{() => {
-        alert('not enabled');
-      }}">
+      on:click="{sendNotesAnki}">
       Send to anki
     </button>
 
