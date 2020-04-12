@@ -26,7 +26,7 @@
       action: "addNotes",
       version: 6,
       params: {
-        notes: [questions.map(formatCloze)]
+        notes: questions.map(formatCloze)
       }
     };
     console.log(`sending ${JSON.stringify(data, null, 4)}`);
