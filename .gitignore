@@ -128,7 +128,8 @@ dmypy.json
 .pyre/
 
 
-# web/node
+# web/node addded
+/**/node_modules
 # Logs
 logs
 *.log
