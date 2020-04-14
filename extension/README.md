@@ -1,5 +1,6 @@
-# Chrome Extension Svelte Boilerplate
+# Memorai Chrome Extension
 
+This is forked from [chrome-extension-svelte-boilerplate](https://github.com/d-lowl/chrome-extension-svelte-boilerplate)
 A basic foundation boilerplate for rich Chrome Extensions using [Svelte](https://svelte.technology/) and [Webpack](https://webpack.github.io/) to help you write modular and modern Javascript code, load CSS easily and [automatic reload the browser on code changes](https://webpack.github.io/docs/webpack-dev-server.html#automatic-refresh).
 
 ## Developing a new extension
