@@ -22,7 +22,7 @@ origins = ["http://3.22.209.159", "http://questions.humanloop.ml", "https://ques
 app.add_middleware(CORSMiddleware,
                    allow_origins=origins,
                    allow_credentials=True,
-                   allow_methods=["*"],
+                   allow_methods=["DELETE", "GET", "POST", "PUT", "OPTIONS"],
                    allow_headers=["*"])
 
 q_gen = QuestionGenerator()
