@@ -71,18 +71,16 @@
   });
 </script>
 
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+      <a class="navbar-item" href="https://memorai.humanloop.ml" title="Memorai homepage">
+        <img class="logo" alt="logo" src="/icon-128.png" />
+        <img class="logomark" alt="logo" src="/memorai.png" />
+      </a>
+  </div>
+</nav>
 <section class="section">
   <div class="container">
-    <div class=" logomark level is-mobile">
-      <div class="level-left has-text-right">
-        <span class="level-item">
-          <img class="logo" alt="logo" src="/icon-128.png" />
-        </span>
-      </div>
-      <div class="level-right ">
-        <h1 class="textmark title level-item has-text-left">Memorai</h1>
-      </div>
-    </div>
     <div class="field">
       <label class="label">Passage to remember</label>
       <div class="control">
@@ -124,16 +122,22 @@
   .section {
     padding-top: 1.8rem;
   }
+  .navbar {
+    padding-top: 5px;
+  }
+  .navbar-item img {
+    max-height: 46px;
+  }
   .logomark {
-    justify-content: center;
+    /* justify-content: center; */
+    padding-left: 10px;
+    height: 24px;
   }
   .logo {
-    display: inline-block;
-    width: 64px;
-    margin-right: 10px;
+    padding-left: 10px;
   }
   .textmark {
-    display: inline-block;
+    /* display: inline-block; */
   }
 
   textarea {
