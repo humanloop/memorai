@@ -5,7 +5,9 @@
     "page": "background.html"
   },
   "permissions": [
-    "http://3.17.29.171/",
+    "http://3.22.209.159/",
+    "http://0.0.0.0/",
+    "https://questions.humanloop.ml/",
     "commands",
     "storage",
     "notifications",
