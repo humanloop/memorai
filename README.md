@@ -14,6 +14,21 @@ The alpha version of the Memorai platform is made up of:
  * A machine learning question generation back end (inspired by https://github.com/KristiyanVachev/Question-Generation and using Spacy) exposed via REST API for creating novel quizes (hosted on Amazon Web Services)
  * Integration to Anki memory tool using Anki connect (leveraging the users local instance of Anki)
 
-# Tech stach
+## Tech stack
  - Svelte with webpack for the front end
- - FastAPI, Python and Spacy for the back end
+ - FastAPI, Python and spaCy for the back end
+
+
+## Development
+
+To run the server:
+
+```
+pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+export PYTHONPATH=`PWD`:$PYTHONPATH
+python app/api.py
+```
+
+To run the extension:
+see the readme in /extension
