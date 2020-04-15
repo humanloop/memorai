@@ -36,8 +36,16 @@
     };
     console.log(`sending ${JSON.stringify(data, null, 4)}`);
     sent = true;
-    let response = await post("http://localhost:8765", data);
-    console.log(response);
+    try {
+        let response = await post("http://localhost:8765", data);
+        console.log(response);
+    } catch (err) {
+        if (err.message === "Failed to fetch"){
+            alert('Anki is not connected. Please start the Anki app')
+        }
+        console.log(err.message)
+        }
+
     chrome.browserAction.setIcon({ path: "icon-faded-64.png" });
     while (questions) {
       await sleep(500);
