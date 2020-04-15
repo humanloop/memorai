@@ -43,6 +43,10 @@ def gen_question(text: RequestData, q_type: str = 'cloze'):
     except Exception:
         return HTTPException(500, {'debug_info': 'series type not supported'})
 
+@app.options('/question/')
+def gen_question():
+    return {}
+
 
 if __name__ == "__main__":
     uvicorn.run('api:app', host="0.0.0.0", port=80, reload=True)
