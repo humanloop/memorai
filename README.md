@@ -1,5 +1,7 @@
 
- <img src="https://raw.githubusercontent.com/humanloop/memorai/master/webpack-extension/src/img/icon-192.png" width="180" alt="memorai"> 
+ <img src="https://raw.githubusercontent.com/humanloop/memorai/master/extension/src/img/icon-192.png" width="180" alt="memorai"> 
+ <img src="https://raw.githubusercontent.com/humanloop/memorai/master/extension/src/img/memorai.png" width="180" alt="memorai"> 
+ 
  
 # Memorai
 
@@ -31,4 +33,9 @@ python app/api.py
 ```
 
 To run the extension:
-see the readme in /extension
+
+```
+cd extension
+yarn
+yarn start
+```

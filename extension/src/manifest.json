@@ -1,5 +1,5 @@
 {
-  "name": "Memorai – AI memory assistant",
+  "name": "Memorai – AI memory assistant for Anki",
   "options_page": "options.html",
   "background": {
     "page": "background.html"
