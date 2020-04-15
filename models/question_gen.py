@@ -114,8 +114,7 @@ def clozeAnswer(firstTokenIndex, lastTokenIndex, sentStart, sentEnd, doc, answer
     leftPartEnd = doc[firstTokenIndex].idx
     rightPartStart = doc[lastTokenIndex].idx + len(doc[lastTokenIndex])
     rightPartEnd = doc[sentEnd - 1].idx + len(doc[sentEnd - 1])
-    question = doc.text[leftPartStart:leftPartEnd] + '{{c1::' +  answer + '}}'+ doc.text[rightPartStart:rightPartEnd]
-
+    question = doc.text[leftPartStart:leftPartEnd] + '{{c1::' + answer + '}}' + doc.text[rightPartStart:rightPartEnd]
     return question
 
 

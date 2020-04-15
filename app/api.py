@@ -17,8 +17,10 @@ app = FastAPI(title="Memorai APP",
               description="AI memory assistant",
               version="0.0.1")
 
+origins = ["http://3.22.209.159", "http://questions.humanloop.ml", "https://questions.humanloop.ml"]
+
 app.add_middleware(CORSMiddleware,
-                   allow_origins=["*"],
+                   allow_origins=origins,
                    allow_credentials=True,
                    allow_methods=["*"],
                    allow_headers=["*"])
@@ -43,4 +45,4 @@ def gen_question(text: RequestData, q_type: str = 'cloze'):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run('api:app', host="0.0.0.0", port=80, reload=True)
