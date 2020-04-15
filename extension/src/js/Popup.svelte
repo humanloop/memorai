@@ -47,9 +47,10 @@
 
   async function getQuestions() {
     if (selection) {
-      let response = await post("http://3.22.209.159/question/", { text_data: selection });
+      questions = await post("http://3.22.209.159/question/", { text_data: selection });
+      // questions = await post("http://0.0.0.0/question/", { text_data: selection });
       sentSelection = selection;
-      console.log(response);
+      console.log(questions);
       sent = false;
     }
   }
