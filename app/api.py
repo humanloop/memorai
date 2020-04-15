@@ -1,12 +1,13 @@
 """ Our api for exposing our models"""
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, BackgroundTasks, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from starlette.responses import HTMLResponse
 import uvicorn
+import json
+from datetime import datetime
 from models.question_gen import QuestionGenerator
-
 
 # api setup
 class RequestData(BaseModel):
@@ -33,6 +34,13 @@ app.add_middleware(
 
 q_gen = QuestionGenerator()
 
+
+def make_log(caller: str, request: dict, response: list, path: str = 'app/log/'):
+    now = str(datetime.now()).replace(':', '_')
+    log = {'caller': caller, 'request': request, 'response': response, 'time': now}
+    with open(path + 'log_' + now + '.json', 'w') as f:
+        json.dump(json.dumps(log), f)
+
 # app endpoints
 @app.get("/")
 def root():
@@ -42,11 +50,15 @@ def root():
 
 
 @app.post('/question/')
-def gen_question(text: RequestData, q_type: str = 'cloze'):
+def gen_question(text: RequestData, bts: BackgroundTasks, req: Request, q_type: str = 'cloze'):
     try:
-        return q_gen.gen_question(q_type, text.dict()['text_data'])
+        caller = req.client[0] + ':' + str(req.client[1])
+        req = text.dict()
+        resp = q_gen.gen_question(q_type, req['text_data'])
+        bts.add_task(make_log, caller, req, resp)
+        return resp
     except Exception:
-        return HTTPException(500, {'debug_info': 'series type not supported'})
+        return HTTPException(500, {'debug_info': 'something went wrong...'})
 
 
 @app.options('/question/')
