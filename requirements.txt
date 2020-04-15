@@ -1,4 +1,5 @@
-fastapi==0.48.0
+fastapi==0.54.1
+en-core-web-sm==2.2.5
 uvicorn==0.11.2
 pandas==0.24.2
 spacy==2.2.4
