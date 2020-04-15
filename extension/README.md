@@ -13,7 +13,7 @@ _I'll assume that you already read the [Svelte docs](https://svelte.technology/g
 4. Run `yarn`.
 5. Change the package's name and description on `package.json`.
 6. Change the name of your extension on `src/manifest.json`.
-7. Run `npm run start`
+7. Run `yarn start`
 8. Load your extension on Chrome following:
     1. Access `chrome://extensions/`
     2. Check `Developer mode`
