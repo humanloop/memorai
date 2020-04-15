@@ -38,6 +38,11 @@
     sent = true;
     try {
         let response = await post("http://localhost:8765", data);
+        chrome.browserAction.setIcon({ path: "icon-faded-64.png" });
+        while (questions) {
+            await sleep(500);
+            questions = questions.splice(1);
+        }
         console.log(response);
     } catch (err) {
         if (err.message === "Failed to fetch"){
@@ -45,12 +50,6 @@
         }
         console.log(err.message)
         }
-
-    chrome.browserAction.setIcon({ path: "icon-faded-64.png" });
-    while (questions) {
-      await sleep(500);
-      questions = questions.splice(1);
-    }
   }
 
   async function getQuestions() {
