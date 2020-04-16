@@ -2,9 +2,7 @@
   import { onMount, onDestroy } from "svelte";
   import { fade, fly } from "svelte/transition";
   import { post } from "./utils.js";
-  export let name;
-  export let selection =
-    "On July 20, 1969, Armstrong became the first human to step on the moon. Michael Collins, the command module pilot, stayed in orbit around the moon during their descent.";
+  export let selection = "Michael Collins, the command module pilot, stayed in orbit around the moon.";
   let sentSelection = "";
   let questions = [];
   let loading = false;
@@ -37,24 +35,24 @@
     console.log(`sending ${JSON.stringify(data, null, 4)}`);
     sent = true;
     try {
-        let response = await post("http://localhost:8765", data);
-        chrome.browserAction.setIcon({ path: "icon-faded-64.png" });
-        while (questions) {
-            await sleep(500);
-            questions = questions.splice(1);
-        }
-        console.log(response);
+      let response = await post("http://localhost:8765", data);
+      chrome.browserAction.setIcon({ path: "icon-faded-64.png" });
+      while (questions) {
+        await sleep(500);
+        questions = questions.splice(1);
+      }
+      console.log(response);
     } catch (err) {
-        if (err.message === "Failed to fetch"){
-            alert('Anki is not connected. Please start the Anki app')
-        }
-        console.log(err.message)
-        }
+      if (err.message === "Failed to fetch") {
+        alert("Anki is not connected. Please start the Anki app");
+      }
+      console.log(err.message);
+    }
   }
 
   async function getQuestions() {
     if (selection) {
-      questions = await post("http://3.22.209.159/question/", { text_data: selection });
+      questions = await post("https://questions.humanloop.ml/question/", { text_data: selection });
       // questions = await post("http://0.0.0.0/question/", { text_data: selection });
       sentSelection = selection;
       console.log(questions);
@@ -80,10 +78,10 @@
 
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-      <a class="navbar-item" href="https://memorai.humanloop.ml" title="Memorai homepage">
-        <img class="logo" alt="logo" src="/icon-128.png" />
-        <img class="logomark" alt="logo" src="/memorai.png" />
-      </a>
+    <a class="navbar-item" href="https://memorai.humanloop.ml" title="Memorai homepage">
+      <img class="logo" alt="logo" src="/icon-128.png" />
+      <img class="logomark" alt="logo" src="/memorai.png" />
+    </a>
   </div>
 </nav>
 <section class="section">
@@ -142,9 +140,6 @@
   }
   .logo {
     padding-left: 10px;
-  }
-  .textmark {
-    /* display: inline-block; */
   }
 
   textarea {
