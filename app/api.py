@@ -7,6 +7,7 @@ from starlette.responses import HTMLResponse
 import uvicorn
 import json
 from datetime import datetime
+import argparse
 from models.question_gen import QuestionGenerator
 
 # api setup
@@ -65,6 +66,17 @@ def gen_question(text: RequestData, bts: BackgroundTasks, req: Request, q_type: 
 def gen_question():
     return {}
 
-
 if __name__ == "__main__":
-    uvicorn.run('api:app', host="0.0.0.0", port=80, reload=True)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--cert_path", type=str)
+    parser.add_argument("--key_path", type=str)
+    parser.add_argument("--run_mode", type=str, required=True, default='deploy',
+                        help='local or deploy, where deploy will need cert/keys provided')
+    args = parser.parse_args()
+    if args.run_mode == 'deploy':
+        uvicorn.run('api:app', host="0.0.0.0", port=443, reload=True,
+                    ssl_keyfile=args.key_path, ssl_certfile=args.cert_path)
+    elif args.run_mode == 'local':
+        uvicorn.run('api:app', host="0.0.0.0", port=80, reload=True)
+    else:
+        raise NotImplementedError
