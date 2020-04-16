@@ -1,6 +1,6 @@
 {
   "name": "memorai",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "An AI memory assitant - turn sentences into knowledge",
   "scripts": {
     "build": "node utils/build.js",

@@ -7,6 +7,7 @@
   let questions = [];
   let loading = false;
   let sent = false;
+  let menuExpanded = false;
 
   function formatCloze(question) {
     return {
@@ -49,6 +50,10 @@
       console.log(err.message);
     }
   }
+  function openOptions() {
+    console.log("open options");
+    chrome.runtime.openOptionsPage();
+  }
 
   async function getQuestions() {
     if (selection) {
@@ -65,7 +70,7 @@
     chrome.browserAction.setIcon({ path: "icon-64.png" });
     chrome.storage.local.get("selection", function(res) {
       console.log(res);
-      selection = res["selection"];
+      selection = res["selection"] || "";
       getQuestions();
     });
   });
@@ -82,14 +87,37 @@
       <img class="logo" alt="logo" src="/icon-128.png" />
       <img class="logomark" alt="logo" src="/memorai.png" />
     </a>
+
+    <a
+      role="button"
+      on:click="{() => (menuExpanded = !menuExpanded)}"
+      class="navbar-burger burger"
+      class:is-active="{menuExpanded}"
+      aria-label="menu"
+      aria-expanded="false"
+      data-target="navbarMenu">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarMenu" class="navbar-menu" class:is-active="{menuExpanded}">
+    <div class="navbar-end">
+      <a on:click|preventDefault="{openOptions}" href="/options.html" class="navbar-item">Options</a>
+    </div>
   </div>
 </nav>
+
 <section class="section">
   <div class="container">
     <div class="field">
       <label class="label">Passage to remember</label>
       <div class="control">
-        <textarea class="textarea" bind:value="{selection}"></textarea>
+        <textarea
+          class="textarea"
+          bind:value="{selection}"
+          placeholder="Paste text here or right-click '🧠 Add to Memorai' on selected text on any website."></textarea>
       </div>
     </div>
     {#if loading}
