@@ -12,6 +12,7 @@
     "storage",
     "notifications",
     "contextMenus",
+    "activeTab",
     "http://localhost/"
   ],
   "browser_action": {
