@@ -1,5 +1,5 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
+  import { onMount, onDestroy, tick } from "svelte";
   import { fade, fly } from "svelte/transition";
   import { post } from "./utils.js";
   export let selection = "Michael Collins, the command module pilot, stayed in orbit around the moon.";
@@ -34,6 +34,13 @@
 
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  async function dblClickCard(card) {
+    console.log(card);
+    card.editing = true;
+    card = card;
+    await tick();
+    card.editor.focus();
   }
   async function sendToAnki() {
     console.log(`sending ${JSON.stringify(questions, null, 4)}`);
@@ -76,15 +83,6 @@
       console.log(cards);
       sent = false;
     }
-  }
-
-  function handleDblClick(event) {
-    let div = event.target;
-  }
-  function handleKeyDown(event) {
-    //submit the div's content to the edit function if enter or tab is pressed.
-    //keyCode == 13 || keyCode == 9 ? edit(event) : null;
-    if (event.key === "Enter") cards.map(x => (x.editing = false));
   }
 
   onMount(async () => {
@@ -153,26 +151,34 @@
             <button class="is-pulled-right button is-small" on:click="{getQuestions}">Get questions</button>
           {/if}
         </label>
+        
         <div class="control">
-
-          {#each cards as card, i}
+          {#each cards as card, i (i)}
             <div class="notification" class:is-info="{sent}" out:fly>
-  <button
-                  class="delete"
-                  on:click="{() => {
-                    cards = [...cards.slice(0, i), ...cards.slice(i + 1)];
-                  }}"></button>
-              {#if card.editing}
-                <div
-                  class="card-content is-editing"
-                  contenteditable="true"
-                  on:keydown="{handleKeyDown}"
-                  bind:textContent="{card.text}"></div>
-              {:else}
-                <div class="card-content" contenteditable="false" on:dblclick="{() => (card.editing = true)}">
-                  {@html displayCloze(card.text)}
-                </div>
-              {/if}
+              <button
+                class="delete"
+                on:click="{() => {
+                  cards = [...cards.slice(0, i), ...cards.slice(i + 1)];
+                }}"></button>
+              <div
+                class="card-content is-editing"
+                class:is-hidden="{!card.editing}"
+                contenteditable="true"
+                on:blur="{() => {
+                  card.editing = false;
+                }}"
+                bind:this="{card.editor}"
+                bind:textContent="{card.text}"></div>
+              <div
+                class:is-hidden="{card.editing}"
+                class="card-content"
+                on:dblclick="{() => {
+                  <!-- Not sure why but setting this in dblClickCard does not cause the reactivity. -->
+                  card.editing = true;
+                  dblClickCard(card);
+                }}">
+                {@html displayCloze(card.text)}
+              </div>
             </div>
           {/each}
 
