@@ -4,10 +4,11 @@
   import { post } from "./utils.js";
   export let selection = "Michael Collins, the command module pilot, stayed in orbit around the moon.";
   let sentSelection = "";
-  let questions = [];
+  let cards = [];
   let loading = false;
   let sent = false;
   let menuExpanded = false;
+  let editting = [];
 
   function formatCloze(question) {
     return {
@@ -19,6 +20,16 @@
       },
       tags: ["memorai"]
     };
+  }
+
+  function displayCloze(string) {
+    let clozeRegex = /({{c(\d)::([^}]+)}})/;
+    let index = 0;
+    let s = string;
+    while (s.match(clozeRegex)) {
+      s = s.replace(clozeRegex, `<span class="cloze is-$2">$3</span>`);
+    }
+    return s;
   }
 
   function sleep(ms) {
@@ -57,12 +68,23 @@
 
   async function getQuestions() {
     if (selection) {
-      questions = await post("https://questions.humanloop.ml/question/", { text_data: selection });
-      // questions = await post("http://0.0.0.0/question/", { text_data: selection });
+      let response = await post("https://questions.humanloop.ml/question/", { text_data: selection });
+      cards = response.map(x => {
+        return { type: "cloze", text: x, editing: false };
+      });
       sentSelection = selection;
-      console.log(questions);
+      console.log(cards);
       sent = false;
     }
+  }
+
+  function handleDblClick(event) {
+    let div = event.target;
+  }
+  function handleKeyDown(event) {
+    //submit the div's content to the edit function if enter or tab is pressed.
+    //keyCode == 13 || keyCode == 9 ? edit(event) : null;
+    if (event.key === "Enter") cards.map(x => (x.editing = false));
   }
 
   onMount(async () => {
@@ -89,6 +111,7 @@
     </a>
 
     <a
+      href="#navbarMenu"
       role="button"
       on:click="{() => (menuExpanded = !menuExpanded)}"
       class="navbar-burger burger"
@@ -131,14 +154,25 @@
           {/if}
         </label>
         <div class="control">
-          {#each questions as question, i}
+
+          {#each cards as card, i}
             <div class="notification" class:is-info="{sent}" out:fly>
-              <button
-                class="delete"
-                on:click="{() => {
-                  questions = [...questions.slice(0, i), ...questions.slice(i + 1)];
-                }}"></button>
-              {question}
+  <button
+                  class="delete"
+                  on:click="{() => {
+                    cards = [...cards.slice(0, i), ...cards.slice(i + 1)];
+                  }}"></button>
+              {#if card.editing}
+                <div
+                  class="card-content is-editing"
+                  contenteditable="true"
+                  on:keydown="{handleKeyDown}"
+                  bind:textContent="{card.text}"></div>
+              {:else}
+                <div class="card-content" contenteditable="false" on:dblclick="{() => (card.editing = true)}">
+                  {@html displayCloze(card.text)}
+                </div>
+              {/if}
             </div>
           {/each}
 
@@ -173,5 +207,25 @@
   textarea {
     width: 300px;
     max-height: 140px;
+  }
+  .is-editing {
+    background: #f5f5f5;
+  }
+
+  :global(.cloze) {
+    font-weight: bold;
+    border-bottom: 2px solid black;
+  }
+  :global(.cloze.is-1) {
+    color: hsl(348, 100%, 61%);
+    border-color:  hsl(348, 100%, 61%);
+  }
+  :global(.cloze.is-2) {
+    color: hsl(204, 86%, 53%);
+    border-color: hsl(204, 86%, 53%);
+  }
+  :global(.cloze.is-3) {
+    color: hsl(141, 71%, 48%);
+    border-color: hsl(141, 71%, 48%);
   }
 </style>
