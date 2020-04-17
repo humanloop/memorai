@@ -209,7 +209,7 @@
     max-height: 140px;
   }
   .is-editing {
-    background: #f5f5f5;
+    background: white;
   }
 
   :global(.cloze) {
@@ -218,7 +218,7 @@
   }
   :global(.cloze.is-1) {
     color: hsl(348, 100%, 61%);
-    border-color:  hsl(348, 100%, 61%);
+    border-color: hsl(348, 100%, 61%);
   }
   :global(.cloze.is-2) {
     color: hsl(204, 86%, 53%);
