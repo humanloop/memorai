@@ -218,6 +218,10 @@
     background: white;
   }
 
+  .card-content {
+    cursor: pointer;
+  }
+  
   :global(.cloze) {
     font-weight: bold;
     border-bottom: 2px solid black;
