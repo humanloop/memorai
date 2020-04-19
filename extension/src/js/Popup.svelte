@@ -43,12 +43,12 @@
     card.editor.focus();
   }
   async function sendToAnki() {
-    console.log(`sending ${JSON.stringify(questions, null, 4)}`);
+    console.log(`sending ${JSON.stringify(cards.map(x=>x.text), null, 4)}`);
     let data = {
       action: "addNotes",
       version: 6,
       params: {
-        notes: questions.map(formatCloze)
+        notes: cards.map(x=>x.text).map(formatCloze)
       }
     };
     console.log(`sending ${JSON.stringify(data, null, 4)}`);
@@ -56,9 +56,9 @@
     try {
       let response = await post("http://localhost:8765", data);
       chrome.browserAction.setIcon({ path: "icon-faded-64.png" });
-      while (questions) {
+      while (cards) {
         await sleep(500);
-        questions = questions.splice(1);
+        cards = cards.splice(1);
       }
       console.log(response);
     } catch (err) {
@@ -153,7 +153,7 @@
         </label>
         
         <div class="control">
-          {#each cards as card, i (i)}
+          {#each cards as card, i (card)}
             <div class="notification" class:is-info="{sent}" out:fly>
               <button
                 class="delete"
