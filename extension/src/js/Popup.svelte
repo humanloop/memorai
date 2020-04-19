@@ -35,13 +35,15 @@
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-  async function dblClickCard(card) {
+
+  async function ClickCard(card) {
     console.log(card);
     card.editing = true;
     card = card;
     await tick();
     card.editor.focus();
   }
+
   async function sendToAnki() {
     console.log(`sending ${JSON.stringify(cards.map(x=>x.text), null, 4)}`);
     let data = {
@@ -68,6 +70,7 @@
       console.log(err.message);
     }
   }
+
   function openOptions() {
     console.log("open options");
     chrome.runtime.openOptionsPage();
@@ -172,10 +175,10 @@
               <div
                 class:is-hidden="{card.editing}"
                 class="card-content"
-                on:dblclick="{() => {
-                  <!-- Not sure why but setting this in dblClickCard does not cause the reactivity. -->
+                on:click="{() => {
+                  <!-- Not sure why but setting this in ClickCard does not cause the reactivity. -->
                   card.editing = true;
-                  dblClickCard(card);
+                  ClickCard(card);
                 }}">
                 {@html displayCloze(card.text)}
               </div>
