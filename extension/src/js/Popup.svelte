@@ -5,7 +5,7 @@
   export let selection = "Michael Collins, the command module pilot, stayed in orbit around the moon.";
   let sentSelection = "";
   let cards = [];
-  let loading = false;
+  let status = "loading"
   let sent = false;
   let menuExpanded = false;
   let editting = [];
@@ -45,6 +45,7 @@
   }
 
   async function sendToAnki() {
+    status = 'sending'
     console.log(`sending ${JSON.stringify(cards.map(x=>x.text), null, 4)}`);
     let data = {
       action: "addNotes",
@@ -58,15 +59,17 @@
     try {
       let response = await post("http://localhost:8765", data);
       chrome.browserAction.setIcon({ path: "icon-faded-64.png" });
-      while (cards) {
+      while (cards.length > 0) {
         await sleep(500);
         cards = cards.splice(1);
       }
+      status = ''
       console.log(response);
     } catch (err) {
       if (err.message === "Failed to fetch") {
         alert("Anki is not connected. Please start the Anki app");
       }
+      status = ''
       console.log(err.message);
     }
   }
@@ -95,6 +98,7 @@
       console.log(res);
       selection = res["selection"] || "";
       getQuestions();
+      status = ''
     });
   });
 
@@ -144,7 +148,7 @@
           placeholder="Paste text here or right-click '🧠 Add to Memorai' on selected text on any website."></textarea>
       </div>
     </div>
-    {#if loading}
+    {#if status==='loading'}
       loading...
     {:else}
       <div class="field">
@@ -187,9 +191,9 @@
 
         </div>
       </div>
+    <button class="button is-fullwidth" class:is-loading={status==='sending'} on:click="{sendToAnki}">Send to anki</button>
     {/if}
 
-    <button class="button is-fullwidth" on:click="{sendToAnki}">Send to anki</button>
 
   </div>
 </section>
