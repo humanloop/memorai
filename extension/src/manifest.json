@@ -6,11 +6,8 @@
   },
   "permissions": [
     "https://questions.humanloop.ml/",
-    "commands",
     "storage",
-    "notifications",
     "contextMenus",
-    "activeTab",
     "http://localhost/"
   ],
   "browser_action": {
