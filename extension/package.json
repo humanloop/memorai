@@ -1,6 +1,6 @@
 {
   "name": "memorai",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "AI memory assistant for Anki – remember everything you read by automatically generating question cards from text.",
   "scripts": {
     "build": "node utils/build.js",

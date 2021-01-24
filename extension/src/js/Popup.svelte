@@ -86,7 +86,8 @@
         {n_best: 5, data:[ {text: selection} ]}    
       );
       if (response) {
-        cards = response[0].predictions.map(x => ({ type: "cloze", text: x.question, editing: false }));
+        console.log({response})
+        cards = response[0].predictions[0].value.map(x => ({ type: "cloze", text: x.label, editing: false }));
       } else {
         cards = {};
       }
