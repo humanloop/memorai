@@ -81,7 +81,7 @@
 
   async function getQuestions() {
     if (selection) {
-      let response = await post("https://questions.humanloop.ml/question/", { text_data: selection });
+      let response = await post("http://***replace with your URL***/question/?q_type=cloze", { text_data: selection });
       cards = response.map(x => {
         return { type: "cloze", text: x, editing: false };
       });

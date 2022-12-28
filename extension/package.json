@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "description": "AI memory assistant for Anki – remember everything you read by automatically generate question cards from the text.",
   "scripts": {
-    "build": "node utils/build.js",
-    "start": "node utils/webserver.js"
+    "build": "NODE_OPTIONS=--openssl-legacy-provider node utils/build.js",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider node utils/webserver.js"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^1.0.0",

@@ -34,6 +34,8 @@ python app/api.py
 
 To run the extension:
 
+First, edit line 84 of extension/src/js/Popup.svelte, to replace ***replace with your URL*** with the URL where the app is running.  If running on the same machine that you intend to use the extension then you can replace with 'localhost'.  Then
+
 ```
 cd extension
 yarn
