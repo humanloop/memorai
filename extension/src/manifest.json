@@ -6,11 +6,9 @@
   },
   "permissions": [
     "https://questions.humanloop.ml/",
-    "commands",
+    "https://api.humanloop.com/",
     "storage",
-    "notifications",
     "contextMenus",
-    "activeTab",
     "http://localhost/"
   ],
   "browser_action": {

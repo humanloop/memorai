@@ -4,7 +4,8 @@ export function post(endpoint, data) {
     credentials: "include",
     body: JSON.stringify(data),
     headers: {
-      "Content-Type": "application/json",
+      "x-api-key": "64682ead9ed065fd2e8aabbbd0c51239",
+      "content-type": "application/json",
     },
   };
   return fetch(endpoint, opts)

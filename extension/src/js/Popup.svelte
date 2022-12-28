@@ -85,6 +85,7 @@
       cards = response.map(x => {
         return { type: "cloze", text: x, editing: false };
       });
+
       sentSelection = selection;
       console.log(cards);
       sent = false;
